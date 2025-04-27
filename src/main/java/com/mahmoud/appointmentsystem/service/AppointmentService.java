@@ -22,15 +22,27 @@ public class AppointmentService {
         this.userServiceClient = userServiceClient;
     }
     public Appointment book(Appointment appointment) {
+        try{
         // Fetch doctor details via Feign
         UserDTO doctor = userServiceClient.getUserById(appointment.getDoctorId());
+        if (doctor == null) {
+            throw new RuntimeException("Doctor not found with ID: " + appointment.getDoctorId());
+        }
         // Fetch patient details via Feign
         UserDTO patient = userServiceClient.getUserById(appointment.getPatientId());
+        if (patient == null) {
+            throw new RuntimeException("Patient not found with ID: " + appointment.getPatientId());
+        }
+
         logger.info("Patient Retrieved: {}", patient);
         logger.info("Doctor Retrieved: {}", doctor);
 
         appointment.setStatus("BOOKED");
         return repository.save(appointment);
+        } catch (Exception e) {
+            logger.error("Error fetching user info", e);
+            throw new RuntimeException("User fetch failed "+ e.getMessage());
+        }
     }
     public List<Appointment> getByDoctorId(Long doctorId) {
         return repository.findByDoctorId(doctorId);

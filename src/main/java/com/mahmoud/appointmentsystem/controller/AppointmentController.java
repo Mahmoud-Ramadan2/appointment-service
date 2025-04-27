@@ -14,7 +14,10 @@ public class AppointmentController {
     public AppointmentController(AppointmentService service) {
         this.service = service;
     }
-
+@GetMapping("test")
+public String test(){
+        return "EEEEEEEEEEE";
+}
     // Book an appointment
     @PostMapping("/book")
     public Appointment bookAppointment(@RequestBody Appointment appointment) {
@@ -24,12 +27,14 @@ public class AppointmentController {
     // View appointments for a doctor
     @GetMapping("/doctor/{id}")
     public List<Appointment> getDoctorAppointments(@PathVariable Long id) {
+
         return service.getByDoctorId(id);
     }
 
     // View appointments for a patient
     @GetMapping("/patient/{id}")
     public List<Appointment> getPatientAppointments(@PathVariable Long id) {
+
         return service.getByPatientId(id);
     }
 
