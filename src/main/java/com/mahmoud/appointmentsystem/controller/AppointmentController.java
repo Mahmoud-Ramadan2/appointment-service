@@ -2,6 +2,8 @@ package com.mahmoud.appointmentsystem.controller;
 
 import com.mahmoud.appointmentsystem.model.Appointment;
 import com.mahmoud.appointmentsystem.service.AppointmentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,38 +11,39 @@ import java.util.List;
 @RestController
 @RequestMapping("/appointments")
 public class AppointmentController {
-    private final AppointmentService service;
+    private final AppointmentService appointmentService;
 
-    public AppointmentController(AppointmentService service) {
-        this.service = service;
+    public AppointmentController(AppointmentService service, AppointmentService appointmentService) {
+        this.appointmentService = appointmentService;
     }
-@GetMapping("test")
-public String test(){
-        return "EEEEEEEEEEE";
-}
     // Book an appointment
-    @PostMapping("/book")
-    public Appointment bookAppointment(@RequestBody Appointment appointment) {
-        return service.book(appointment);
+    @PostMapping
+    public ResponseEntity<Appointment> bookAppointment(@RequestBody Appointment appointment) {
+        Appointment createdAppointment= appointmentService.book(appointment);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdAppointment);
     }
 
     // View appointments for a doctor
     @GetMapping("/doctor/{id}")
-    public List<Appointment> getDoctorAppointments(@PathVariable Long id) {
+    public ResponseEntity<List<Appointment>> getDoctorAppointments(@PathVariable Long id) {
+        List<Appointment> Appointments= appointmentService.getByDoctorId(id);
 
-        return service.getByDoctorId(id);
+        return ResponseEntity.ok(Appointments);
     }
 
     // View appointments for a patient
     @GetMapping("/patient/{id}")
-    public List<Appointment> getPatientAppointments(@PathVariable Long id) {
+    public  ResponseEntity<List<Appointment>> getPatientAppointments(@PathVariable Long id) {
 
-        return service.getByPatientId(id);
+        List<Appointment> Appointments= appointmentService.getByDoctorId(id);
+
+        return ResponseEntity.ok(Appointments);
     }
 
     // Admin - view all appointments
-    @GetMapping("/all")
-    public List<Appointment> getAllAppointments() {
-        return service.getAll();
-    }
+    @GetMapping
+    public ResponseEntity<List<Appointment>> getAllAppointments() {
+        List<Appointment> Appointments= appointmentService.getAll();
+
+        return ResponseEntity.ok(Appointments);    }
 }

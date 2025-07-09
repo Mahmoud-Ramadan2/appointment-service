@@ -30,8 +30,8 @@ public class JWTUtil {
         return roles.stream()
                 .map(r-> new SimpleGrantedAuthority(r))
                 .collect(Collectors.toList());
-    }
 
+    }
 
     private DecodedJWT validateToken(String token) {
         try {

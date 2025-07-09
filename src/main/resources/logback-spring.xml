@@ -18,6 +18,8 @@
                 <pattern>${LOG_PATTERN}</pattern>
             </encoder>
         </appender>
+
+
         <appender name="DEV_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${LOG_FILE}</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -30,6 +32,9 @@
                 <pattern>${LOG_PATTERN}</pattern>
             </encoder>
         </appender>
+        <!-- Hibernate SQL Logger -->
+        <logger name="org.hibernate.SQL" level="DEBUG"/>
+        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
 
         <root level="DEBUG">
             <appender-ref ref="DEV_CONSOLE"/>
