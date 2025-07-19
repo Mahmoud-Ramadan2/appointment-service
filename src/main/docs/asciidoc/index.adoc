@@ -1,0 +1,12 @@
+= API Documentation
+:toc: left
+:toclevels: 2
+:sectnums:
+:snippets: ../../target/generated-snippets
+
+== Appointments
+
+=== Book an appointment successfully
+
+include::{snippets}/appointments-book/http-request.adoc[]
+include::{snippets}/appointments-book/http-response.adoc[]

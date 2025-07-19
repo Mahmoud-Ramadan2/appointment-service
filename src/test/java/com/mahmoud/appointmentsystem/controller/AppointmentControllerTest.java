@@ -11,6 +11,8 @@ import com.mahmoud.appointmentsystem.security.JWTUtil;
 import com.mahmoud.appointmentsystem.service.AppointmentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,14 +26,19 @@ import org.junit.jupiter.api.DisplayName;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@AutoConfigureRestDocs(outputDir = "target/generated-snippets")
 @WebMvcTest(AppointmentController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @Import(AppointmentService.class) // Use real AppointmentService
@@ -78,6 +85,8 @@ public class AppointmentControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.doctorId").value(2L))
                 .andExpect(jsonPath("$.status").value("BOOKED"))
+            .andDo(document("appointments-book")) // generates  docs
+
                 .andReturn().getResponse().getContentAsString();
 
         // Verify
