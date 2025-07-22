@@ -70,7 +70,7 @@ public class AppointmentControllerTest {
         String json = objectMapper.writeValueAsString(inputAppointment);
         System.out.println("Serialized JSON: " + json);
 
-        when(appointmentRepository.save(any(Appointment.class))).thenReturn(savedAppointment);
+       // when(appointmentRepository.save(any(Appointment.class))).thenReturn(savedAppointment);
         when(userServiceClient.getUserById(2L)).thenReturn(new UserDTO("Doctor@mail.com", "Doctor Name"));
         when(userServiceClient.getUserById(3L)).thenReturn(new UserDTO("Patient@mail.com", "Patient Name"));
         when(appointmentRepository.save(any(Appointment.class))).thenReturn(savedAppointment);
@@ -109,6 +109,7 @@ public class AppointmentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(inputAppointment)))
                 .andExpect(status().isNotFound())
+                .andDo(document("appointments-book-failed-doctor-not-found"))
                 ;
 
     }

@@ -10,3 +10,8 @@
 
 include::{snippets}/appointments-book/http-request.adoc[]
 include::{snippets}/appointments-book/http-response.adoc[]
+
+== Book Appointment - Doctor Not Found
+
+include::{snippets}/appointments-book-failed-doctor-not-found/http-request.adoc[]
+include::{snippets}/appointments-book-failed-doctor-not-found/http-response.adoc[]

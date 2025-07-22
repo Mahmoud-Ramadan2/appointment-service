@@ -1,5 +1,8 @@
 package com.mahmoud.appointmentsystem;
 
+import io.github.cdimascio.dotenv.Dotenv;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -10,7 +13,28 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient
 public class DoctorAppointmentSystemApplication {
 
-	public static void main(String[] args) {
+	private  static final Logger logger = LoggerFactory.getLogger(DoctorAppointmentSystemApplication.class);
+
+	/**
+	 * Main method to run the Doctor Appointment System application.
+	 * It loads environment variables from a .env file based on the active profile.
+	 *
+	 * @param args command line arguments
+	 */
+
+	public static void main(String[] args)
+	{
+		// auto Load environment variables from the.env file based on the active profile
+		String profile = System.getProperty("spring.profiles.active","dev");
+		logger.info("Active profile: {}", profile);
+
+		Dotenv dotenv = Dotenv.configure()
+				.filename(".%s.env".formatted(profile))
+				.ignoreIfMissing()
+				.load();
+
+		dotenv.entries().forEach(entry ->
+				System.setProperty(entry.getKey(), entry.getValue()));
 		SpringApplication.run(DoctorAppointmentSystemApplication.class, args);
 	}
 
