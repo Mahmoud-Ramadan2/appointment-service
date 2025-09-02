@@ -7,7 +7,7 @@ This project is a microservices-based doctor appointment booking system built us
 
 ---
 
-## ? Tech Stack
+##  Tech Stack
 
 - **Java 21**
 - **Spring Boot 3.4.4**
@@ -21,26 +21,26 @@ This project is a microservices-based doctor appointment booking system built us
 ---
 
 
-## ? Project Structure
+##  Project Structure
 
 ```
 doctor-appointment-system/
-?
-??? src/
-?   ??? main/
-?   ?   ??? java/com/mahmoud/appointmentsystem/   # Core business logic
-?   ?   ??? resources/
-?   ?       ??? application.properties                  # Configuration
-?   ?       ??? logback-spring.xml                  # Logging Configuration
-?   ??? test/                                           # Unit and integration tests
-??? pom.xml
-??? README.md
-??? x.env
+
+   src/
+         main/
+                java/com/mahmoud/appointmentsystem/   # Core business logic
+                resources/
+                   application.properties                  # Configuration
+                   logback-spring.xml                  # Logging Configuration
+        test/                                           # Unit and integration tests
+   pom.xml
+   README.md
+   x.env
 ```
 
 ---
 
-## ?? Configuration
+##  Configuration
 
 ### `application.properties`
 
@@ -48,7 +48,7 @@ doctor-appointment-system/
 # Service Identity
 All sensitive and dynamic values are managed using a `.env` file.
 
-### ? Sample `.env`
+###  Sample `.env`
 
 ```dotenv
 SPRING_APPLICATION_NAME=user-service
@@ -82,20 +82,20 @@ SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
 SPRING_PROFILES_ACTIVE=dev
 ```
 
-## ? Logging
+##  Logging
 
-- ? Structured Logging using **SLF4J** + **Logback**
+-  Structured Logging using **SLF4J** + **Logback**
     - Configurable via `logback-spring.xml`
     - Supports profile-specific logging behavior
     - Optional: rolling log files, separate logs per environment, colored console output
 
-## ? Security
+##  Security
 
 The service uses `spring-security` combined with `java-jwt` 
 
 ---
 
-## ? Testing
+##  Testing
 
 - Uses **JUnit 5** for unit testing
 - Uses **Mockito** for mocking service dependencies
@@ -103,7 +103,7 @@ The service uses `spring-security` combined with `java-jwt`
 
 ---
 
-## ? Dependencies Overview (from `pom.xml`)
+##  Dependencies Overview (from `pom.xml`)
 
 | Purpose                | Library                               |
 |------------------------|----------------------------------------|
@@ -119,7 +119,7 @@ The service uses `spring-security` combined with `java-jwt`
 
 ---
 
-## ? Running the Service
+  ##  Running the Service
 
 ### Prerequisites
 
@@ -143,7 +143,7 @@ mvn clean spring-boot:run
 
 ---
 
-## ? Eureka & Appointment Service Integration
+##  Eureka & Appointment Service Integration
 
 | Service                | Port   |
 |------------------------|--------|
@@ -155,14 +155,14 @@ All services register with Eureka for load-balanced inter-service communication.
 
 ---
 
-## ?? Author
+##  Author
 
 **Mahmoud Ramadan**  
 Email: [mahmoudramadan385@gmail.com](mailto:mahmoudramadan385@gmail.com)
 
 ---
 
-## ?? License
+##  License
 
 This project is licensed under a proprietary license. For use or redistribution, contact the author.
 
