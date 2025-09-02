@@ -31,4 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
-/logs/
+# logs
+/logs
+
+# .env files
+*.env
+
+/src/main/docs/asciidoc/index.adoc
+/src/main/docs/asciidoc/index.html
