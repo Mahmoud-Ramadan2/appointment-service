@@ -1,8 +1,7 @@
 
-#  Doctor Appointment System
+#  Appointment service—Appointment System
 
-
-This project is a microservices-based doctor appointment booking system built using Spring Boot and Spring Cloud. It includes service discovery, security via JWT, REST APIs,RestDocs,testing units and externalized configuration using environment variables (.env files).
+The **Appointment service** is a core microservice in the *Appointment System*, responsible for booking and handling patient's and doctor's appointments     
 
 
 ---
@@ -14,17 +13,19 @@ This project is a microservices-based doctor appointment booking system built us
 - **Spring Cloud Version**: `2024.0.1`
 - **Spring Data JPA**
 - **Spring Security + JWT**
-- **MySQL**
+- **OpenFeign**
 - **Eureka Client**
+-  **API Gateway**
 - **JUnit 5 + Mockito**
-
+- **MySQL**
+ 
 ---
 
 
 ##  Project Structure
 
 ```
-doctor-appointment-system/
+appointment-service/
 
    src/
          main/
@@ -105,16 +106,17 @@ The service uses `spring-security` combined with `java-jwt`
 
 ##  Dependencies Overview (from `pom.xml`)
 
-| Purpose                | Library                               |
-|------------------------|----------------------------------------|
-| Web Framework          | `spring-boot-starter-web`             |
-| JPA ORM                | `spring-boot-starter-data-jpa`        |
-| Security               | `spring-boot-starter-security`        |
-| JWT Authentication     | `com.auth0:java-jwt`                  |
-| Service Discovery      | `spring-cloud-starter-netflix-eureka-client` |
-| Monitoring             | `spring-boot-starter-actuator`        |
-| MySQL DB               | `mysql-connector-j`                   |
-| Dev Tools              | `spring-boot-devtools`                |
+| Purpose                | Library                                               |
+|------------------------|-------------------------------------------------------|
+| Web Framework          | `spring-boot-starter-web`                             |
+| JPA ORM                | `spring-boot-starter-data-jpa`                        |
+| Security               | `spring-boot-starter-security`                        |
+| JWT Authentication     | `com.auth0:java-jwt`                                  |
+|                OpenFeign        | `spring-cloud-starter-openfeign`                                                      |
+| Service Discovery      | `spring-cloud-starter-netflix-eureka-client`          |
+| Monitoring             | `spring-boot-starter-actuator`                        |
+| MySQL DB               | `mysql-connector-j`                                   |
+| Dev Tools              | `spring-boot-devtools`                                |
 | Testing                | `spring-boot-starter-test`, `mockito`, `junit-jupiter` |
 
 ---
@@ -127,13 +129,17 @@ The service uses `spring-security` combined with `java-jwt`
 - Maven
 - MySQL running on `localhost:3306` with DB named `doctor_appointment`
 - Eureka server running on port `8761`
-- user-service microservice  running on port `8081`
+- user-service microservice running on port `8081`
+- gateway service running on port `8080`
+
 
 ### Start Order
 
 1. **Eureka Server**
-2. **User Service**
-3. **Appointment Service**
+2. **gateway service**
+3. **User Service**
+4. **Appointment Service**
+5. Other services
 
 ### Run via Maven:
 
@@ -149,7 +155,8 @@ mvn clean spring-boot:run
 |------------------------|--------|
 | Eureka Server          | `8761` |
 | User Service           | `8081` |
-| Appointment Service    | `8080` |
+| Appointment Service    | `8082` |
+| gateway service     | `8080` |
 
 All services register with Eureka for load-balanced inter-service communication.
 
