@@ -6,7 +6,8 @@
 <configuration>
 
     <!-- Common pattern -->
-    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"/>
+    <property name="LOG_PATTERN"
+              value="%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr([%thread]){blue} %clr(%-5level){yellow} %clr(%logger{36}){cyan} - %msg%n"/>
     <property name="LOG_FILE" value="logs/doctor-app-logs.log"/>
 
     <!-- ========================= -->
