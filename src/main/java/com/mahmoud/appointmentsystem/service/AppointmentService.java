@@ -1,5 +1,6 @@
 package com.mahmoud.appointmentsystem.service;
 
+import com.mahmoud.appointmentsystem.constants.AppointmentConstants;
 import com.mahmoud.appointmentsystem.DTO.UserDTO;
 import com.mahmoud.appointmentsystem.client.UserServiceClient;
 import com.mahmoud.appointmentsystem.kafka.eventsDTO.AppointmentEvent;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.scanner.Constant;
 
 @Service
 public class AppointmentService {
@@ -29,9 +31,11 @@ public class AppointmentService {
     public Appointment book(Appointment appointment) {
         // Fetch doctor details via Feign
         UserDTO doctor = userServiceClient.getUserById(appointment.getDoctorId());
-        if (doctor == null) {
+        System.out.println(" Doctor is "+doctor.toString());
+        if (doctor == null || !doctor.getRoles().contains(AppointmentConstants.ROLE_DOCTOR)) {
             throw new UserNotFoundException("Doctor not found with ID: " + appointment.getDoctorId());
         }
+
         // Fetch patient details via Feign
         UserDTO patient = userServiceClient.getUserById(appointment.getPatientId());
         if (patient == null) {
@@ -41,7 +45,7 @@ public class AppointmentService {
         logger.info("Patient Retrieved: {}", patient);
         logger.info("Doctor Retrieved: {}", doctor);
 
-        appointment.setStatus("BOOKED");
+        appointment.setStatus(AppointmentConstants.STATUS_PENDING);
         Appointment saved = repository.save(appointment);
 
         // Publish Kafka event
@@ -52,8 +56,9 @@ public class AppointmentService {
 
 
         AppointmentEvent appointmentEvent =
-                new AppointmentEvent(saved.getId(), saved.getDoctorId(), saved.getPatientId(),
-                        saved.getAppointmentTime(), saved.getStatus(), "APPOINTMENT_BOOKED");
+                new AppointmentEvent
+                        (saved.getId(), saved.getDoctorId(), saved.getPatientId(),doctor.getEmail(), patient.getEmail(),
+                        saved.getAppointmentTime(), saved.getStatus(), AppointmentConstants.EVENT_APPOINTMENT_PENDING);
 
         eventProducer.sendAppointmentEvent(appointmentEvent);
 

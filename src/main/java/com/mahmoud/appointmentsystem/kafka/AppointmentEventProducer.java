@@ -20,7 +20,6 @@ public class AppointmentEventProducer {
     private final KafkaTemplate<String, AppointmentEvent> kafkaTemplate;
     private final KafkaTemplate<String, String> kafkaStringTemplate;
 
-    private final KafkaTopics kafkaTopics;
 
     public void sendAppointmentEvent(AppointmentEvent event) {
 
@@ -36,11 +35,9 @@ public class AppointmentEventProducer {
                                 result.getRecordMetadata().partition(),
                                 result.getRecordMetadata().offset());
                     } else {
-                        System.out.println("FFFFaied");
                         log.error("Failed to send event: {}", event, ex);
                     }
                 });
-        System.out.println("fish");
     }
 
     public void sendStringEvent(String eventMessage) {
