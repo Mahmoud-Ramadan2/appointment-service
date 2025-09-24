@@ -1,34 +1,32 @@
 package com.mahmoud.appointmentsystem.DTO;
 
 import jakarta.persistence.Column;
+import lombok.Data;
+import lombok.ToString;
 
+import java.util.HashSet;
+import java.util.Set;
+
+@ToString
 public class UserDTO {
-
     private Long id;
     private String username;
     private String email;
+ private Set <String>roles;
 
     public UserDTO() {
     }
 
-    public UserDTO(String email, String username) {
-        this.email = email;
+    public UserDTO(String username, String email) {
         this.username = username;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.email = email;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(String name) {
         this.username = username;
     }
 
@@ -40,12 +38,18 @@ public class UserDTO {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
