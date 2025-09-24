@@ -4,14 +4,18 @@
        TRACE < DEBUG < INFO < WARN < ERROR-->
 
 <configuration>
+    <!-- Add Spring Boot's color converters -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
 
     <!-- Common pattern -->
 
     <property name="LOG_PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"/>
+              value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %clr(%-5level) %clr(%logger{36}){cyan} - %msg%n"/>
 
     <property name="LOG_FILE"
-              value="logs/doctor-app-logs.log"/>
+              value="logs/appointment-service-logs.log"/>
 
     <!-- ========================= -->
     <!-- Development Profile Logs -->
@@ -40,6 +44,12 @@
         <logger name="org.hibernate.SQL" level="DEBUG"/>
         <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
 
+        <!-- Reduce noise from Kafka & Eureka -->
+        <logger name="org.apache.kafka" level="WARN"/>
+        <logger name="org.springframework.kafka" level="INFO"/>
+        <logger name="com.netflix.discovery" level="INFO"/>
+        <logger name="org.springframework.cloud.netflix.eureka" level="INFO"/>
+
         <root level="DEBUG">
             <appender-ref ref="DEV_CONSOLE"/>
             <appender-ref ref="DEV_FILE"/>
@@ -63,6 +73,10 @@
             </encoder>
         </appender>
 
+        <logger name="org.apache.kafka" level="WARN"/>
+        <logger name="org.springframework.kafka" level="INFO"/>
+        <logger name="com.netflix.discovery" level="INFO"/>
+        <logger name="org.springframework.cloud.netflix.eureka" level="INFO"/>
         <root level="INFO">
             <appender-ref ref="PROD_FILE"/>
         </root>
