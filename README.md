@@ -1,7 +1,7 @@
 
 #  Appointment service—Appointment System
 
-The **Appointment service** is a core microservice in the *Appointment System*, responsible for booking and handling patient's and doctor's appointments     
+The **Appointment service** is a core microservice in the *Appointment System*, responsible for booking and handling patient's and doctor's appointments and Acts as producer for notification service.     
 
 
 ---
@@ -9,16 +9,19 @@ The **Appointment service** is a core microservice in the *Appointment System*, 
 ##  Tech Stack
 
 - **Java 21**
-- **Spring Boot 3.4.4**
+- **Spring Boot 3.4.5**
 - **Spring Cloud Version**: `2024.0.1`
 - **Spring Data JPA**
 - **Spring Security + JWT**
+- - **Lombok**
+- **Spring Actuator**
 - **OpenFeign**
+- **Spring Kafka**
 - **Eureka Client**
 -  **API Gateway**
 - **JUnit 5 + Mockito**
 - **MySQL**
- 
+
 ---
 
 
@@ -128,10 +131,60 @@ The service uses `spring-security` combined with `java-jwt`
 - Java 21
 - Maven
 - MySQL running on `localhost:3306` with DB named `doctor_appointment`
+- Kafka & Zookeeper running (`localhost:9092`, `localhost:2181`)
 - Eureka server running on port `8761`
-- user-service microservice running on port `8081`
+- user-service  running on port `8081`
+- notification-service  running on port `8083`
 - gateway service running on port `8080`
+#### Kafka Quick Start
 
+- Running Kafka with Docker Compose
+
+This project requires Kafka and Zookeeper.  
+A preconfigured `docker-compose.kafka.yml` file is included in the root directory.
+
+Start the services with:
+
+```bash
+docker compose -f docker-compose.kafka.yml up -d
+````
+- docker-compose.yml for kafka
+```bash
+# Here docker-compose file to install kafka
+
+services:
+ # 1. Zookeeper service
+ zookeeper:
+  image: confluentinc/cp-zookeeper:7.7.0
+  container_name: zookeeper
+  ports:
+   - "2181:2181"
+  environment:
+   ZOOKEEPER_CLIENT_PORT: 2181
+   ZOOKEEPER_TICK_TIME: 2000
+  networks:
+    - kafka-network
+    
+ # 2. kafka service
+ kafka:
+  image: confluentinc/cp-kafka:7.7.0
+  container_name: kafka
+  ports:
+   - "9092:9092"
+  environment:
+   KAFKA_BROKER_ID: 1
+   KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+   KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+   KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  depends_on:
+   - zookeeper
+  networks:
+    - kafka-network
+    
+networks:
+ kafka-network:
+  driver: bridge
+ ```
 
 ### Start Order
 
@@ -139,7 +192,8 @@ The service uses `spring-security` combined with `java-jwt`
 2. **gateway service**
 3. **User Service**
 4. **Appointment Service**
-5. Other services
+5. **Notification Service**
+6. Other services
 
 ### Run via Maven:
 
@@ -151,12 +205,13 @@ mvn clean spring-boot:run
 
 ##  Eureka & Appointment Service Integration
 
-| Service                | Port   |
-|------------------------|--------|
-| Eureka Server          | `8761` |
-| User Service           | `8081` |
-| Appointment Service    | `8082` |
-| gateway service     | `8080` |
+| Service              | Port   |
+|----------------------|--------|
+| Eureka Server        | `8761` |
+| User Service         | `8081` |
+| Appointment Service  | `8082` |
+| Notification Service | `8083`  |
+| gateway service      | `8080` |
 
 All services register with Eureka for load-balanced inter-service communication.
 
